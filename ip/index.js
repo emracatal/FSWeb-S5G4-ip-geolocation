@@ -89,7 +89,7 @@ cardCreate(response.data); */
 
 const myCard = (dataDizi) => {
   const cardInfo = `<div class="card">
-	<img src="https://flagsapi.com/TR/flat/64.png" />
+	<img src="https://flagsapi.com/${dataDizi["ülkeKodu"]}/flat/64.png" />
 	<div class="card-info">
 		<h3 class="ip">${dataDizi["sorgu"]}</h3>
 		<p class="ulke">${dataDizi["ülke"]}${dataDizi["ülkeKodu"]}</p>
@@ -103,5 +103,23 @@ const myCard = (dataDizi) => {
 `;
   return cardInfo;
 };
+document.querySelector(".cards").innerHTML = "<div>Yükleniyor...</div>";
 
-document.querySelector(".cards").innerHTML = myCard(response.data);
+async function geoAPI() {
+  await ipAdresimiAl();
+  console.log(benimIP);
+  axios
+    .get(`https://apis.ergineer.com/ipgeoapi/${benimIP}`)
+    .then(function (response) {
+      console.log(benimIP);
+      document.querySelector(".cards").innerHTML = myCard(response.data);
+    })
+    .catch(function (error) {
+      console.log("error");
+    })
+    .finally(function () {
+      console.log(benimIP);
+    });
+}
+
+geoAPI();
